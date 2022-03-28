@@ -17,6 +17,8 @@ export default function Produtores() {
     <Text style={estilos.titulo}>{titulo}</Text>;
   }
 
+  
+
   return (
     <FlatList
       data={lista}
