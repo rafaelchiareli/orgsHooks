@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Text, FlatList, StyleSheet} from 'react-native';
 import {carregaProdutores} from '../../../servicos/carregaDados';
+import Produtor from './Produtor';
 
-export default function Produtores() {
+export default function Produtores({topo: Topo}) {
   const [titulo, setTitulo] = useState('');
   const [lista, seLista] = useState([]);
-  
+
   useEffect(() => {
     const retorno = carregaProdutores();
     setTitulo(retorno.titulo);
@@ -13,17 +14,21 @@ export default function Produtores() {
   }, []);
 
   const TopoLista = () => {
-    return;
-    <Text style={estilos.titulo}>{titulo}</Text>;
-  }
-
-  
+    return (
+      <>
+        <Topo />
+        <Text style={estilos.titulo}>{titulo}</Text>
+      </>
+    );
+  };
 
   return (
     <FlatList
       data={lista}
-      renderItem={({item: {nome}}) => <Text>{nome}</Text>}
-      ListFooterComponent={TopoLista}></FlatList>
+      keyExtractor={({nome}) => nome}
+      renderItem={({item}) => <Produtor {...item} />}
+      ListFooterComponent={TopoLista}
+    />
   );
 }
 
@@ -33,6 +38,7 @@ const estilos = StyleSheet.create({
     lineHeight: 32,
     marginHorizontal: 16,
     marginTop: 16,
-    fontSize: 'bold',
+    fontWeight: 'bold',
+    color: '#464646',
   },
 });
