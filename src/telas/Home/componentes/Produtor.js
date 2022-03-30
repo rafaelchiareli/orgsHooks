@@ -1,18 +1,43 @@
-import React from 'react';
-import {Text, View, Image, StyleSheet} from 'react-native';
+import React, {useState , useReducer, useMemo} from 'react';
+import {Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
+
 import Estrelas from '../../../componentes/Estrelas';
+const distanciaEmMetros = (distancia)  => {
+  console.log('distanciaEmMetros');
+  return `${distancia}m`;
+
+
+}
+
 export default function Produtor({nome, imagem, distancia, estrelas}) {
+  //const [selecionado, setSelecionado] = useState(false);
+  const [selecionado, inverterSelecionado] = useReducer(
+    (selecionado) => !selecionado,
+    false
+
+  );
+
+const distanciaTexto = useMemo(
+    () => distanciaEmMetros(distancia), 
+    [distancia]);
+
   return (
-    <View style={estilos.cartao}>
+    <TouchableOpacity
+      style={estilos.cartao}
+      onPress={inverterSelecionado}>
       <Image style={estilos.imagem} source={imagem} accessibilityLabel={nome} />
       <View style={estilos.informacoes}>
         <View>
-        <Text style={estilos.nome}>{nome}</Text>
-        <Estrelas quantidade={estrelas} />
+          <Text style={estilos.nome}>{nome}</Text>
+          <Estrelas
+            quantidade={estrelas}
+            editavel={selecionado}
+            grande={selecionado}
+          />
         </View>
-        <Text style={estilos.distancia}>{distancia}</Text>
+        <Text style={estilos.distancia}>{distanciaTexto}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -26,14 +51,13 @@ const estilos = StyleSheet.create({
     //android
     elevation: 4,
     //ios
-    shadowColor : "#000",
+    shadowColor: '#000',
     shadowOffset: {
-        width: 0,
-        height: 2,
+      width: 0,
+      height: 2,
     },
     shadowOpacity: 0.23,
-    shadowRadius: 2.62
-    
+    shadowRadius: 2.62,
   },
 
   imagem: {
@@ -58,6 +82,6 @@ const estilos = StyleSheet.create({
   },
   distancia: {
     fontSize: 12,
-    lineHeight: 19,   
+    lineHeight: 19,
   },
 });
