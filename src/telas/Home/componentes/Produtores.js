@@ -1,17 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Text, FlatList, StyleSheet} from 'react-native';
-import {carregaProdutores} from '../../../servicos/carregaDados';
+import useProdutores from '../../../hooks/useProdutores';
+//import {carregaProdutores} from '../../../servicos/carregaDados';
 import Produtor from './Produtor';
 
 export default function Produtores({topo: Topo}) {
-  const [titulo, setTitulo] = useState('');
-  const [lista, seLista] = useState([]);
-
-  useEffect(() => {
-    const retorno = carregaProdutores();
-    setTitulo(retorno.titulo);
-    seLista(retorno.lista);
-  }, []);
+ 
+const [titulo, lista] = useProdutores();
 
   const TopoLista = () => {
     return (
@@ -27,7 +22,7 @@ export default function Produtores({topo: Topo}) {
       data={lista}
       keyExtractor={({nome}) => nome}
       renderItem={({item}) => <Produtor {...item} />}
-      ListFooterComponent={TopoLista}
+      ListHeaderComponent={TopoLista}
     />
   );
 }
